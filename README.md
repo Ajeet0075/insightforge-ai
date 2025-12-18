@@ -67,12 +67,12 @@ Each agent:
 Accepts a natural-language question and optionally a GA4 property ID.
 
 ### Request Body
-
 ```json
 {
   "query": "Give me daily page views and users for the last 7 days",
   "propertyId": "GA4_PROPERTY_ID"
 }
+```
 
 ## Example Queries
 

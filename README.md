@@ -1,16 +1,16 @@
 # Spike AI Analytics & SEO Agent
 
-An agent-based AI backend system that answers natural-language marketing questions by orchestrating multiple specialized agents over real analytics and SEO datasets.
+An **agent-based AI backend system** that answers natural-language marketing questions by orchestrating multiple specialized agents over real analytics and SEO datasets.
 
-The system dynamically routes each query to the correct agent and always responds in clear, human-readable language rather than raw JSON or database output.
+The system dynamically routes each query to the correct agent and always responds in **clear, human-readable language**, rather than raw JSON or database output.
 
 ---
 
 ## Project Overview
 
-This project demonstrates how AI agents can be used to reason over real-world marketing data sources such as Google Analytics and SEO crawl datasets.
+This project demonstrates how AI agents can reason over real-world marketing data sources such as Google Analytics and SEO crawl datasets.
 
-Each query is interpreted using an LLM, routed to the appropriate agent, processed using deterministic logic, and returned as a natural-language explanation.
+Each query is interpreted using an LLM, routed to the appropriate agent, processed using deterministic business logic, and returned as a natural-language explanation suitable for business users.
 
 ---
 
@@ -18,45 +18,59 @@ Each query is interpreted using an LLM, routed to the appropriate agent, process
 
 ### Google Analytics 4 (GA4 Data API)
 
-- Active users
-- Total users
-- Sessions
-- Page views
-- Time-based trends
+- Active users  
+- Total users  
+- Sessions  
+- Page views  
+- Time-based trends  
 
 ### Screaming Frog SEO Crawl (Google Sheets)
 
-- Meta descriptions
-- Titles and headings
-- Canonical tags
-- Status codes (4xx / 5xx)
-- Word count and content quality
+- Meta descriptions  
+- Titles and headings  
+- Canonical tags  
+- Status codes (4xx / 5xx)  
+- Word count and content quality  
 
 ### LiteLLM Proxy (Gemini Models)
 
-- Intent extraction
-- Natural-language explanation generation
+- Intent extraction  
+- Natural-language explanation generation  
 
 ---
 
 ## Architecture Overview
 
-The backend follows an agent-based orchestration pattern.
+The backend follows an **agent-based orchestration pattern**.
 
+User Query
+│
+▼
 POST /query
-↓
+│
+▼
 Orchestrator
-↓
-Analytics Agent (GA4) OR SEO Agent (Google Sheets)
-↓
-Natural Language Response Generator (LLM)
+├──► Analytics Agent ──► GA4 Data API
+│ └──► LLM (Explanation)
+│
+└──► SEO Agent ──► Google Sheets (Screaming Frog)
+└──► LLM (Explanation)
 
+yaml
+Copy code
+
+This architecture clearly demonstrates:
+
+- System flow  
+- Agent interactions  
+- Orchestrator routing logic  
 
 Each agent:
-- Extracts intent from the user query
-- Queries its respective data source
-- Applies deterministic business rules
-- Produces a natural-language answer
+
+- Extracts intent from the user query  
+- Queries its respective data source  
+- Applies deterministic business rules  
+- Produces a natural-language answer  
 
 ---
 
@@ -67,26 +81,38 @@ Each agent:
 Accepts a natural-language question and optionally a GA4 property ID.
 
 ### Request Body
+
 ```json
 {
   "query": "Give me daily page views and users for the last 7 days",
   "propertyId": "GA4_PROPERTY_ID"
 }
-```
+Example Queries
+Analytics (GA4)
+Give me daily page views and users for the last 14 days
 
-## Example Queries
+How many active users did we have recently?
 
-### Analytics (GA4)
-- Give me daily page views and users for the last 14 days
-- How many active users did we have recently?
+Show user trends over the past two weeks
 
-### SEO (Google Sheets)
-- Find pages with missing meta descriptions
-- Which pages have low word count?
-- Show pages with 4xx or 5xx errors
-- Find pages missing canonical tags
+What is our recent traffic performance?
 
-## Example Response
+How many sessions did we get recently?
+
+SEO (Google Sheets)
+Find pages with missing meta descriptions
+
+Which pages have low word count?
+
+Show pages with 4xx or 5xx errors
+
+Find pages missing canonical tags
+
+Which pages are not indexable?
+
+Example Response
+json
+Copy code
 {
   "agent": "analytics",
   "answer": "I checked your Google Analytics data for the last 14 days, but there is currently no recorded traffic available. Once your website starts receiving users, this agent will provide daily trends and insights.",
@@ -96,11 +122,13 @@ Accepts a natural-language question and optionally a GA4 property ID.
     "row_count": 0
   }
 }
-
 The system always responds in natural language, even when no data is available.
 
-## Configuration
+Configuration
 All environment-specific configuration is managed using a .env file.
+
+env
+Copy code
 # App
 APP_PORT=8080
 
@@ -113,28 +141,35 @@ LITELLM_MODEL=gemini-1.5-flash
 
 # SEO
 SEO_SPREADSHEET_ID=1zzf4ax_H2WiTBVrJigGjF2Q3Yz-qy2qMCbAMKvl6VEE
-
 Sensitive files such as credentials.json are excluded from version control.
 
-## Running Instructions
-Start the FastAPI server using Uvicorn.
+Running Instructions
+Start the FastAPI server using Uvicorn:
+
+bash
+Copy code
 uvicorn app.main:app --port 8080
+API documentation is available at:
+
+arduino
+Copy code
 http://127.0.0.1:8080/docs
+Design Principles
+Agent-based orchestration
 
+Deterministic fallbacks (no hallucination)
 
-## Design Principles
+Natural-language answers over raw JSON
 
-- Agent-based orchestration
-- Deterministic fallbacks (no hallucination)
-- Natural-language answers over raw JSON
-- Clean separation of configuration and logic
-- Production-style backend architecture
+Clean separation of configuration and logic
 
-## Final Status
+Production-style backend architecture
 
-- GA4 Analytics Agent implemented
-- SEO Agent (all sheets) implemented
-- Natural-language responses enabled
-- Clean configuration management
+Final Status
+GA4 Analytics Agent implemented
 
+SEO Agent (all sheets) implemented
 
+Natural-language responses enabled
+
+Clean configuration management

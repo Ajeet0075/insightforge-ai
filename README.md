@@ -39,29 +39,29 @@ Each query is interpreted using an LLM, routed to the appropriate agent, process
 
 ---
 
-## Architecture Overview
+### Architecture Overview
 
 The backend follows an **agent-based orchestration pattern**.
 
-User Query
-│
-▼
-POST /query
-│
-▼
-Orchestrator
-├──► Analytics Agent ──► GA4 Data API
-│ └──► LLM
-│
-└──► SEO Agent ──► Google Sheets (Screaming Frog)
-└──► LLM
+**Request Flow:**
 
+1. **User Query** → `POST /query`
+2. **Orchestrator**
+   - Determines intent (Analytics / SEO)
+3. **Analytics Agent**
+   - Fetches data via **GA4 Data API**
+4. **SEO Agent**
+   - Pulls crawl data from **Google Sheets (Screaming Frog)**
+5. **LLM Layer**
+   - Intent extraction
+   - Insight explanation
+6. **Structured Response**
+   - Business-ready insights (no raw JSON)
 
-This architecture clearly demonstrates:
-
+This architecture demonstrates:
 - System flow  
 - Agent interactions  
-- Orchestrator routing logic  
+- Deterministic orchestrator routing 
 
 Each agent:
 
